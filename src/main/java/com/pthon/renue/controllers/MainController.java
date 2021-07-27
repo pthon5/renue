@@ -3,16 +3,9 @@ package com.pthon.renue.controllers;
 import com.pthon.renue.RenueApplication;
 import com.pthon.renue.configurations.AppProperties;
 import com.pthon.renue.models.ParserModel;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ResourceUtils;
 
 import java.io.*;
-import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.Map;
 import java.util.Scanner;
