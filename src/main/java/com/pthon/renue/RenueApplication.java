@@ -1,7 +1,10 @@
 package com.pthon.renue;
 
+import com.pthon.renue.controllers.MainController;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 
 @SpringBootApplication
 public class RenueApplication {
@@ -9,5 +12,6 @@ public class RenueApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RenueApplication.class, args);
 	}
+
 
 }
