@@ -13,6 +13,6 @@ public class startup {
     @EventListener(ContextRefreshedEvent.class)
     public void contextRefreshedEvent() throws URISyntaxException, IOException {
         MainController mainController = new MainController();
-        mainController.startParcer();
+        mainController.startParser();
     }
 }

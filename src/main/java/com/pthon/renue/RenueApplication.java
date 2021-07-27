@@ -9,7 +9,9 @@ import org.springframework.context.event.EventListener;
 @SpringBootApplication
 public class RenueApplication {
 
+	public static String[] ARGS;
 	public static void main(String[] args) {
+		ARGS = args;
 		SpringApplication.run(RenueApplication.class, args);
 	}
 

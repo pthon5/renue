@@ -2,27 +2,48 @@ package com.pthon.renue.controllers;
 
 import com.pthon.renue.RenueApplication;
 import com.pthon.renue.configurations.AppProperties;
-import com.pthon.renue.models.ParcerModel;
+import com.pthon.renue.models.ParserModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ResourceUtils;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.util.Date;
-import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
 @Controller
 public class MainController {
 
-    //get column from args
-    @Value("${column:0}")
-    private int column;
+    public void startParser() throws IOException {
+        Logger logger = Logger.getLogger("parserLogger");
 
-    public void startParcer() throws URISyntaxException, IOException {
-        Logger logger = Logger.getLogger("parcerLogger");
+        int column = 0;
+
+        if (RenueApplication.ARGS.length > 0) {
+            try {
+                column = Integer.parseInt(RenueApplication.ARGS[0]);
+            } catch (NumberFormatException e) {
+                logger.warning("Передана строка, вместо числа.");
+            }
+
+        }
+
+        //from properties
+        column = column == 0 ? AppProperties.getDefaultColumn() : column;
+
+        System.out.println("Column: " + column);
+
+        String fileName = AppProperties.getFileName();
+        //get file
+        InputStream in = getClass().getResourceAsStream("/csv/airports.csv");
+
         //get query
         Scanner scanner = new Scanner(System.in);
         System.out.print("Введите строку:");
@@ -30,31 +51,16 @@ public class MainController {
         //if empty query
         if (query.equals("")) {logger.warning("Введён пустой запрос"); return;}
 
-        int column = this.column == 0 ? AppProperties.getDefaultColumn() : this.column;
-        String fileName = AppProperties.getFileName();
-
-        String jarPath = new File(RenueApplication.class.getProtectionDomain().getCodeSource().getLocation()
-                .toURI()).getPath() + "/" + fileName;
-
-        File file = new File(jarPath);
-        //check file exists
-        if (!file.exists()) {
-            logger.warning(file.getPath() + " Не существует.");
-            return;
-        }
-
-        ParcerModel parcerModel = new ParcerModel();
-
         long startTime = new Date().getTime();
 
-        List<String> result = parcerModel.parceFile(file, column, query);
+        Map<String, String> result = ParserModel.parseFile(in, column, query);
 
         long endTime = new Date().getTime();
 
         if (result == null) {logger.warning("Парсер вернул null. Возможно, номер нужной колонки равен нулю или меньше нуля."); return;}
 
-        for (String str : result) {
-            System.out.println(str);
+        for (Map.Entry<String, String> entry : result.entrySet()) {
+            System.out.println(entry.getValue());
         }
 
         System.out.println("Количество найденных строк: " + result.size());

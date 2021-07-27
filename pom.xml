@@ -11,6 +11,7 @@
 	<groupId>com.pthon</groupId>
 	<artifactId>renue</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>renue</name>
 	<description>Renue zadaniye</description>
 	<properties>
